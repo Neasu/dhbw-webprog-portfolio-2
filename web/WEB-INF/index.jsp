@@ -30,9 +30,42 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <main>
+        <nav>
             
+        </nav>
+        <main>
+            <div class="container">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 panel panel-default">
+                    <form class="panel-body">
+                        <div class="form-group row">
+                            <div class="col-xs-6">
+                                <input class="form-control" name="serie" type="text" placeholder="Serie" />
+                            </div>
+                            <div class="col-xs-3">
+                                <input class="form-control" name="nummer" type="number" placeholder="Nummer" min="1" />
+                            </div>
+                            <div class="col-xs-3">
+                                <input class="form-control" name="jahr" type="number" placeholder="Jahr" min="1" minlength="4" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <input class="form-control" name="titel" type="text" placeholder="Titel" />
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xs-6">
+                                <input class="form-control" name="zeichner" type="text" placeholder="Zeichner" />
+                            </div>
+                            <div class="col-xs-6">
+                                <input class="form-control" name="texter" type="text" placeholder="Texter" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="button" class="btn btn-default" onclick="newComic()">Comic anlegen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </main>
         <footer>
             

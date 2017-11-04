@@ -7,8 +7,7 @@ body {
     font-family: 'Fira Sans', sans-serif;
 }
 
-main {
-    width: 100%;
-    margin: 2em 2em 2em 2em;
-    background-color: lightsteelblue;
+.form-group > .col-xs-3, .col-xs-6 {
+    padding-right: 0px;
+    padding-left: 0px;
 }
