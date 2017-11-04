@@ -3,6 +3,7 @@ package de.dhbw.comix.web;
 import de.dhbw.comix.database.DatabaseFacade;
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,6 +33,8 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException {
+        RequestDispatcher dp = request.getRequestDispatcher("WEB-INF/index.jsp");
+        dp.forward(request, response);
     }
     
     /**

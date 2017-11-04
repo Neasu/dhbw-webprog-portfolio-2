@@ -1,0 +1,14 @@
+/* 
+    Created on : 04.11.2017, 15:15:15
+    Author     : N3asu
+*/
+
+body {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+main {
+    width: 100%;
+    margin: 2em 2em 2em 2em;
+    background-color: lightsteelblue;
+}
