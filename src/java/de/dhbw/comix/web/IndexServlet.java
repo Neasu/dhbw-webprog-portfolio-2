@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 //Import ArrayList
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 /**
  * Requenst Handler für die Startseite mit folgenden Funktionen:
  *
@@ -51,7 +51,6 @@ public class IndexServlet extends HttpServlet {
 //        this.database.createNewComic("Monkey Island", "The Secret of Monkey Island", 0, 1990, "Guybrush Threepwood", "Ron Gilbert");
 //        this.database.createNewComic("Monkey Island", "Monkey Island 2: LeChuck's Revenge", 1, 1991, "Guybrush Threepwood", "Ron Gilbert");
 //        this.database.createNewComic("King's Quest", "Kings Quest", 0, 1983, "King Graham", "Roberta Williams");
-        
         // Speichern der Serien in den Session-Kontext
         List<Serie> serienList = this.database.getAllComics();
         session.setAttribute("serien", serienList);
@@ -118,10 +117,10 @@ public class IndexServlet extends HttpServlet {
             }
 
             if (id >= 0) {
-                
+
                 Comic c = this.database.getComicById(id);
-                
-                if(c != null) {
+
+                if (c != null) {
                     this.database.delete(c);
                 } else {
                     setFehlermeldung(request, "Konnte den ausgewählten Comic nicht finden!");
@@ -132,62 +131,59 @@ public class IndexServlet extends HttpServlet {
         }
     }
 
-    private void addComic(HttpServletRequest request, HttpServletResponse response) 
-        throws IOException, ServletException{
+    private void addComic(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+
+        HttpSession s = request.getSession();
+
+        String serie = (String) request.getParameter("serie");
+        String nummer = (String) request.getParameter("nummer");
+        String jahr = (String) request.getParameter("jahr");
+        String titel = (String) request.getParameter("titel");
+        String zeichner = (String) request.getParameter("zeichner");
+        String texter = (String) request.getParameter("texter");
         
-    
-        if (request.getParameter("action").equals("create")){
+        boolean isValid = true;
+        ArrayList<String> errors = new ArrayList<>();
+
+        if (serie.isEmpty()) {
+            errors.add("Bitte geben Sie eine Serie ein.");
+            isValid = false;
+        }
+        if (nummer.isEmpty()) {
+            setFehlermeldung(request, "Bitte geben Sie eine Nummer ein.");
+        }
+        if (jahr.isEmpty()) {
+            setFehlermeldung(request, "Bitte geben Sie ein Jahr ein.");
+        }
+        if (titel.isEmpty()) {
+            setFehlermeldung(request, "Bitte geben Sie einen Titel ein.");
+        }
+        if (zeichner.isEmpty()) {
+            setFehlermeldung(request, "Bitte geben Sie einen Zeichner ein.");
+        }
+        if (texter.isEmpty()) {
+            setFehlermeldung(request, "Bitte geben Sie einen Texter ein.");
+        } 
         
-         /*response.setContentType("text/html");
-        PrintWriter toClient = response.getWriter();*/
-        
-        
-     
-            HttpSession s = request.getSession();
-            
-            String serie = (String)request.getParameter("serie");
-            String nummer = (String)request.getParameter("nummer");
-            String jahr = (String)request.getParameter("jahr");
-            String titel = (String)request.getParameter("titel");
-            String zeichner = (String)request.getParameter("zeichner");
-            String texter = (String)request.getParameter("texter");
-            
-            if (serie.isEmpty() ){
-                setFehlermeldung(request, "Bitte geben Sie eine Serie ein.");
-            }
-            if (nummer.isEmpty() ){
-                setFehlermeldung(request, "Bitte geben Sie eine Nummer ein.");
-            }   
-            if (jahr.isEmpty() ){
-                setFehlermeldung(request, "Bitte geben Sie ein Jahr ein.");
-            }   
-            if (titel.isEmpty() ){
-                setFehlermeldung(request, "Bitte geben Sie einen Titel ein.");
-            }  
-            if (zeichner.isEmpty() ){
-                setFehlermeldung(request, "Bitte geben Sie einen Zeichner ein.");
-            }
-            if (texter.isEmpty() ){
-                setFehlermeldung(request, "Bitte geben Sie einen Texter ein.");
-            }
-            
-            else {
-                int dataJahr = Integer.parseInt(jahr);
-                int dataNummer = Integer.parseInt(nummer);
-                
-               this.database.createNewComic(serie, titel, dataNummer, dataJahr, zeichner, texter);
-               
-               s.removeAttribute("title");
-               s.removeAttribute("jahr");
-               s.removeAttribute("nummer");
-               s.removeAttribute("serie");
-               s.removeAttribute("zeichner");
-               s.removeAttribute("texter");
-              
-       
-            }
-             
-             
+        if(isValid) {
+            int dataJahr = Integer.parseInt(jahr);
+            int dataNummer = Integer.parseInt(nummer);
+
+            this.database.createNewComic(serie, titel, dataNummer, dataJahr, zeichner, texter);
+
+            s.removeAttribute("title");
+            s.removeAttribute("jahr");
+            s.removeAttribute("nummer");
+            s.removeAttribute("serie");
+            s.removeAttribute("zeichner");
+            s.removeAttribute("texter");
+        } else {
+            String[] errs = new String[errors.size()];
+            errors.toArray(errs);
+            setFehlermeldung(request, errs);
+        }
+
         /*toClient.println("<html>");
         toClient.println("<body>");
         toClient.println("Test " + titel + ".");
@@ -195,15 +191,6 @@ public class IndexServlet extends HttpServlet {
         toClient.println("</html>");
         
         toClient.flush();*/
-        }
-        // Check if inputs are valid
-        // Create new Comic (and Series)
-        // Add Comic to Series (and Series to Database)
-        
-        // Use setFehlermeldung for Error Messages!
-        // Use this.database's methods for managing Comics!
-        
-        return;
     }
 
     private void setFehlermeldung(HttpServletRequest request, String... msg) {
