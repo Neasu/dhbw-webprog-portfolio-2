@@ -54,6 +54,7 @@
                         </c:when>
                         <c:when test="${not empty serien}">
                             <form method="post">
+                                <input type="hidden" name="action" value="remove">
                                 <c:forEach items="${serien}" var="serie">
                                     <div class="row col-md-12 container panel panel-default serie">
                                         <div class="panel-heading">
@@ -85,6 +86,7 @@
                 </div>
                 <div class="col-md-5 panel panel-default">
                     <form class="panel-body" method="post">
+                        <input type="hidden" name="action" value="create">
                         <div class="form-group row">
                             <div class="col-xs-6">
                                 <input class="form-control" name="serie" type="text" placeholder="Serie" />

@@ -96,6 +96,25 @@ public class IndexServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException {
         System.out.println("POST recieved!");
+        
+        String action = request.getParameter("action");
+        
+        switch(action) {
+            case "create": {
+                System.out.println("CREATE BUTTON");
+                break;
+            }
+            case "remove": {
+                System.out.println("REMOVE BUTTON");
+                break;
+            }
+            default: {
+                System.out.println("UNKNOWN ACTION");
+                break;
+            }
+                
+        }
+        
         response.sendRedirect(request.getRequestURI());
     }
 }
