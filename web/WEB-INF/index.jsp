@@ -83,24 +83,24 @@
                             <input type="hidden" name="action" value="create">
                             <div class="form-group row">
                                 <div class="col-xs-6">
-                                    <input class="form-control" name="serie" type="text" placeholder="Serie" />
+                                    <input class="form-control" name="serie" type="text" placeholder="Serie" value="${serie}"/>
                                 </div>
                                 <div class="col-xs-3">
-                                    <input class="form-control" name="nummer" type="number" placeholder="Nummer" min="1" />
+                                    <input class="form-control" name="nummer" type="number" placeholder="Nummer" min="1" value="${nummer}"/>
                                 </div>
                                 <div class="col-xs-3">
-                                    <input class="form-control" name="jahr" type="number" placeholder="Jahr" min="1" minlength="4" />
+                                    <input class="form-control" name="jahr" type="number" placeholder="Jahr" min="1" minlength="4" value="${jahr}"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <input class="form-control" name="titel" type="text" placeholder="Titel" />
+                                <input class="form-control" name="titel" type="text" placeholder="Titel" value="${titel}"/>
                             </div>
                             <div class="form-group row">
                                 <div class="col-xs-6">
-                                    <input class="form-control" name="zeichner" type="text" placeholder="Zeichner" />
+                                    <input class="form-control" name="zeichner" type="text" placeholder="Zeichner" value="${zeichner}"/>
                                 </div>
                                 <div class="col-xs-6">
-                                    <input class="form-control" name="texter" type="text" placeholder="Texter" />
+                                    <input class="form-control" name="texter" type="text" placeholder="Texter" value="${texter}"/>
                                 </div>
                             </div>
                             <div class="row">
