@@ -4,6 +4,9 @@
     Author     : N3asu
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="de.dhbw.comix.database.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,14 +33,58 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <nav>
-            
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <a class="navbar-brand">Comix-Datenbank</a>
+            </div>
         </nav>
         <main>
             <div class="container">
-                <div class="col-md-6"></div>
-                <div class="col-md-6 panel panel-default">
-                    <form class="panel-body">
+                <div class="col-md-6 container">
+                    <%
+                       List<Serie> serienList = (List<Serie>) session.getAttribute("serien");
+                       boolean isEmpty = true;
+                       if (serienList.size() != 0) {
+                           isEmpty = false;
+                       }
+                    %>
+                    <c:choose >
+                        <c:when test="${empty serien}">
+                            <h2>Keine Comics vorhanden!</h2>
+                        </c:when>
+                        <c:when test="${not empty serien}">
+                            <form method="post">
+                                <c:forEach items="${serien}" var="serie">
+                                    <div class="row col-md-12 container panel panel-default serie">
+                                        <div class="panel-heading">
+                                            <h3>${serie.getSerie()}</h3>
+                                        </div>
+                                        <div class="panel-body col-md-12 container">
+                                            <c:forEach items="${serie.getComics()}" var="comic">
+                                                <div class="row">
+                                                    <div class="col-md-11">
+                                                        <h4>
+                                                            <input class="checkbox" type="checkbox" name="removeComic" value="${comic.getId()}">
+                                                            ${comic.getTitel()}
+                                                        </h4>
+                                                        <p>Nummer ${comic.getNummer()}, ${comic.getJahr()}<br/>
+                                                        Zeichnungen: ${comic.getZeichner()}, Text: ${comic.getTexter()}</p>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                                <input type="submit" class="btn btn-default" value="Ausgewählte Comics löschen"/> 
+                            </form>
+                        </c:when>
+                    </c:choose>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-5 panel panel-default">
+                    <form class="panel-body" method="post">
                         <div class="form-group row">
                             <div class="col-xs-6">
                                 <input class="form-control" name="serie" type="text" placeholder="Serie" />
@@ -61,7 +108,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button type="button" class="btn btn-default" onclick="newComic()">Comic anlegen</button>
+                            <input type="submit" class="btn btn-default" value="Comic anlegen"/>
                         </div>
                     </form>
                 </div>
