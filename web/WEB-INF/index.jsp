@@ -41,13 +41,6 @@
         <main>
             <div class="container">
                 <div class="col-md-6 container">
-                    <%
-                        List<Serie> serienList = (List<Serie>) session.getAttribute("serien");
-                        boolean isEmpty = true;
-                        if (serienList.size() != 0) {
-                            isEmpty = false;
-                        }
-                    %>
                     <c:choose >
                         <c:when test="${empty serien}">
                             <h2>Keine Comics vorhanden!</h2>

@@ -16,113 +16,145 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Requenst Handler für die Startseite mit folgenden Funktionen:
- * 
- *   * Anzeige aller vorhandenen Comics
- *   * Anlage eines neuen Comics
- *   * Löschen aller ausgewählten Comics
+ *
+ *   * Anzeige aller vorhandenen Comics * Anlage eines neuen Comics * Löschen
+ * aller ausgewählten Comics
  */
-@WebServlet(urlPatterns={"/index.html"})
+@WebServlet(urlPatterns = {"/index.html"})
 public class IndexServlet extends HttpServlet {
-    
-    @EJB DatabaseFacade database;
-    
+
+    @EJB
+    DatabaseFacade database;
+
     /**
      * GET-Anfrage: Alle vorhandenen Comics anzeigen
-     * 
+     *
      * @param request
      * @param response
      * @throws IOException
-     * @throws ServletException 
+     * @throws ServletException
      */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws IOException, ServletException {
-        
+            throws IOException, ServletException {
+
         HttpSession session = request.getSession();
         List<Serie> serienList = this.database.getAllComics();
-        
+
         // DUMMY VALUES
-        
         Serie dummy = new Serie();
         dummy.setSerie("Dummy Serie");
-        
+
         Comic dummyC1 = new Comic();
         dummyC1.setId((long) 1);
         dummyC1.setTitel("Dummy Comic 1");
         dummyC1.setJahr(1337);
         dummyC1.setZeichner("King Graham");
         dummyC1.setTexter("Guybrush Threepwood");
-        
+
         Comic dummyC2 = new Comic();
-        dummyC2.setId((long) 1);
+        dummyC2.setId((long) 2);
         dummyC2.setTitel("Dummy Comic 1");
         dummyC2.setJahr(1337);
         dummyC2.setZeichner("King Graham");
         dummyC2.setTexter("Guybrush Threepwood");
-        
+
         List<Comic> comics = dummy.getComics();
-        
+
         comics.add(dummyC1);
         comics.add(dummyC2);
-        
+
         dummy.setComics(comics);
-        
+
         Serie dummyS2 = new Serie();
         dummyS2.setSerie("Dummy Serie 2");
-        
+
         serienList.add(dummy);
         serienList.add(dummyS2);
-        
+
 //        for (Serie s : serienList) {
 //            System.out.println(s.getSerie());
 //        }
-        
         // Speichern der Serien in den Session-Kontext
         session.setAttribute("serien", serienList);
-        
+
         RequestDispatcher dp = request.getRequestDispatcher("WEB-INF/index.jsp");
         dp.forward(request, response);
     }
-    
+
     /**
      * POST-Anfrage: Neuen Comic anlegen oder Comics löschen
-     * 
+     *
      * @param request
      * @param response
      * @throws IOException
-     * @throws ServletException 
+     * @throws ServletException
      */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws IOException, ServletException {
+            throws IOException, ServletException {
+
+        // DUMMY
         System.out.println("POST recieved!");
-        
+
         HttpSession s = request.getSession();
-        
+
         s.setAttribute("fehlermeldungen", null);
-        
+
         String action = request.getParameter("action");
-        
-        switch(action) {
+
+        switch (action) {
             case "create": {
+                // DUMMY
                 System.out.println("CREATE BUTTON");
-                String[] str = {"You have clicked the create button!"};
+                String[] str = {"You have clicked the create button!", "This is a second message!"};
                 s.setAttribute("fehlermeldungen", str);
+
+                addComic(request, response);
+
                 break;
             }
             case "remove": {
+                // DUMMY
                 System.out.println("REMOVE BUTTON");
                 String[] str = {"You have clicked the remove button!"};
                 s.setAttribute("fehlermeldungen", str);
+
+                removeComics(request, response);
+
                 break;
             }
             default: {
                 System.out.println("UNKNOWN ACTION");
                 break;
             }
-                
+
         }
-        
+
         response.sendRedirect(request.getRequestURI());
+    }
+
+    private void removeComics(HttpServletRequest request, HttpServletResponse response) {
+
+        String[] comicIDs = request.getParameterValues("removeComic");
+
+        HttpSession s = request.getSession();
+
+        if (comicIDs == null || comicIDs.length == 0) {
+            String[] fehler = {"Keine Comics ausgewählt!"};
+            s.setAttribute("fehlermeldungen", fehler);
+            return;
+        }
+
+        // DEBUG
+        for (String id : comicIDs) {
+            System.out.println(id);
+        }
+
+        return;
+    }
+
+    private void addComic(HttpServletRequest request, HttpServletResponse response) {
+        return;
     }
 }
