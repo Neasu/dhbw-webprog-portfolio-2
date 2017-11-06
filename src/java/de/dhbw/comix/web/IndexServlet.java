@@ -39,43 +39,14 @@ public class IndexServlet extends HttpServlet {
             throws IOException, ServletException {
 
         HttpSession session = request.getSession();
-        List<Serie> serienList = this.database.getAllComics();
 
         // DUMMY VALUES
-        Serie dummy = new Serie();
-        dummy.setSerie("Dummy Serie");
-
-        Comic dummyC1 = new Comic();
-        dummyC1.setId((long) 1);
-        dummyC1.setTitel("Dummy Comic 1");
-        dummyC1.setJahr(1337);
-        dummyC1.setZeichner("King Graham");
-        dummyC1.setTexter("Guybrush Threepwood");
-
-        Comic dummyC2 = new Comic();
-        dummyC2.setId((long) 2);
-        dummyC2.setTitel("Dummy Comic 1");
-        dummyC2.setJahr(1337);
-        dummyC2.setZeichner("King Graham");
-        dummyC2.setTexter("Guybrush Threepwood");
-
-        List<Comic> comics = dummy.getComics();
-
-        comics.add(dummyC1);
-        comics.add(dummyC2);
-
-        dummy.setComics(comics);
-
-        Serie dummyS2 = new Serie();
-        dummyS2.setSerie("Dummy Serie 2");
-
-        serienList.add(dummy);
-        serienList.add(dummyS2);
-
-//        for (Serie s : serienList) {
-//            System.out.println(s.getSerie());
-//        }
+//        this.database.createNewComic("Monkey Island", "The Secret of Monkey Island", 0, 1990, "Guybrush Threepwood", "Ron Gilbert");
+//        this.database.createNewComic("Monkey Island", "Monkey Island 2: LeChuck's Revenge", 1, 1991, "Guybrush Threepwood", "Ron Gilbert");
+//        this.database.createNewComic("King's Quest", "Kings Quest", 0, 1983, "King Graham", "Roberta Williams");
+        
         // Speichern der Serien in den Session-Kontext
+        List<Serie> serienList = this.database.getAllComics();
         session.setAttribute("serien", serienList);
 
         RequestDispatcher dp = request.getRequestDispatcher("WEB-INF/index.jsp");
@@ -94,34 +65,20 @@ public class IndexServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        // DUMMY
-        System.out.println("POST recieved!");
-
         HttpSession s = request.getSession();
 
+        // Reset Error Messages
         s.setAttribute("fehlermeldungen", null);
 
         String action = request.getParameter("action");
 
         switch (action) {
             case "create": {
-                // DUMMY
-                System.out.println("CREATE BUTTON");
-                String[] str = {"You have clicked the create button!", "This is a second message!"};
-                s.setAttribute("fehlermeldungen", str);
-
                 addComic(request, response);
-
                 break;
             }
             case "remove": {
-                // DUMMY
-                System.out.println("REMOVE BUTTON");
-                String[] str = {"You have clicked the remove button!"};
-                s.setAttribute("fehlermeldungen", str);
-
                 removeComics(request, response);
-
                 break;
             }
             default: {
@@ -138,23 +95,50 @@ public class IndexServlet extends HttpServlet {
 
         String[] comicIDs = request.getParameterValues("removeComic");
 
-        HttpSession s = request.getSession();
-
         if (comicIDs == null || comicIDs.length == 0) {
-            String[] fehler = {"Keine Comics ausgewählt!"};
-            s.setAttribute("fehlermeldungen", fehler);
+            setFehlermeldung(request, "Es wurden keine Comics ausgewählt!");
             return;
         }
 
-        // DEBUG
-        for (String id : comicIDs) {
-            System.out.println(id);
-        }
+        // Remove the selected Comics from the database
+        for (String s_ID : comicIDs) {
+            long id;
+            try {
+                id = Long.parseLong(s_ID);
+            } catch (NumberFormatException ex) {
+                setFehlermeldung(request, "Fehler beim Entfernen:" + ex.getMessage());
+                return;
+            }
 
-        return;
+            if (id >= 0) {
+                
+                Comic c = this.database.getComicById(id);
+                
+                if(c != null) {
+                    this.database.delete(c);
+                } else {
+                    setFehlermeldung(request, "Konnte den ausgewählten Comic nicht finden!");
+                }
+            } else {
+                setFehlermeldung(request, "Invalide ID!");
+            }
+        }
     }
 
     private void addComic(HttpServletRequest request, HttpServletResponse response) {
+
+        // Check if inputs are valid
+        // Create new Comic (and Series)
+        // Add Comic to Series (and Series to Database)
+        
+        // Use setFehlermeldung for Error Messages!
+        // Use this.database's methods for managing Comics!
+        
         return;
+    }
+
+    private void setFehlermeldung(HttpServletRequest request, String... msg) {
+        HttpSession s = request.getSession();
+        s.setAttribute("fehlermeldungen", msg);
     }
 }
