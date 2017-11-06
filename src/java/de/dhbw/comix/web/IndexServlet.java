@@ -4,6 +4,7 @@ import de.dhbw.comix.database.Comic;
 import de.dhbw.comix.database.DatabaseFacade;
 import de.dhbw.comix.database.Serie;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -14,6 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+//Import ArrayList
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 /**
  * Requenst Handler für die Startseite mit folgenden Funktionen:
  *
@@ -125,8 +132,70 @@ public class IndexServlet extends HttpServlet {
         }
     }
 
-    private void addComic(HttpServletRequest request, HttpServletResponse response) {
-
+    private void addComic(HttpServletRequest request, HttpServletResponse response) 
+        throws IOException, ServletException{
+        
+    
+        if (request.getParameter("action").equals("create")){
+        
+         /*response.setContentType("text/html");
+        PrintWriter toClient = response.getWriter();*/
+        
+        
+     
+            HttpSession s = request.getSession();
+            
+            String serie = (String)request.getParameter("serie");
+            String nummer = (String)request.getParameter("nummer");
+            String jahr = (String)request.getParameter("jahr");
+            String titel = (String)request.getParameter("titel");
+            String zeichner = (String)request.getParameter("zeichner");
+            String texter = (String)request.getParameter("texter");
+            
+            if (serie.isEmpty() ){
+                setFehlermeldung(request, "Bitte geben Sie eine Serie ein.");
+            }
+            if (nummer.isEmpty() ){
+                setFehlermeldung(request, "Bitte geben Sie eine Nummer ein.");
+            }   
+            if (jahr.isEmpty() ){
+                setFehlermeldung(request, "Bitte geben Sie ein Jahr ein.");
+            }   
+            if (titel.isEmpty() ){
+                setFehlermeldung(request, "Bitte geben Sie einen Titel ein.");
+            }  
+            if (zeichner.isEmpty() ){
+                setFehlermeldung(request, "Bitte geben Sie einen Zeichner ein.");
+            }
+            if (texter.isEmpty() ){
+                setFehlermeldung(request, "Bitte geben Sie einen Texter ein.");
+            }
+            
+            else {
+                int dataJahr = Integer.parseInt(jahr);
+                int dataNummer = Integer.parseInt(nummer);
+                
+               this.database.createNewComic(serie, titel, dataNummer, dataJahr, zeichner, texter);
+               
+               s.removeAttribute("title");
+               s.removeAttribute("jahr");
+               s.removeAttribute("nummer");
+               s.removeAttribute("serie");
+               s.removeAttribute("zeichner");
+               s.removeAttribute("texter");
+              
+       
+            }
+             
+             
+        /*toClient.println("<html>");
+        toClient.println("<body>");
+        toClient.println("Test " + titel + ".");
+        toClient.println("</body>");
+        toClient.println("</html>");
+        
+        toClient.flush();*/
+        }
         // Check if inputs are valid
         // Create new Comic (and Series)
         // Add Comic to Series (and Series to Database)
