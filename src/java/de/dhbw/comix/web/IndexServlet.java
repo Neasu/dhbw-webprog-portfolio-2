@@ -189,6 +189,12 @@ public class IndexServlet extends HttpServlet {
             String[] errs = new String[errors.size()];
             errors.toArray(errs);
             setFehlermeldung(request, errs);
+            s.setAttribute("serie", serie);
+            s.setAttribute("nummer", nummer);
+            s.setAttribute("jahr", jahr);
+            s.setAttribute("titel", titel);
+            s.setAttribute("zeichner", zeichner);
+            s.setAttribute("texter", texter);
         }
 
     }
