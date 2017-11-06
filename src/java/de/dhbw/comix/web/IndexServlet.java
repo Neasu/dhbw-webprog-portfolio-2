@@ -97,15 +97,23 @@ public class IndexServlet extends HttpServlet {
     throws IOException, ServletException {
         System.out.println("POST recieved!");
         
+        HttpSession s = request.getSession();
+        
+        s.setAttribute("fehlermeldungen", null);
+        
         String action = request.getParameter("action");
         
         switch(action) {
             case "create": {
                 System.out.println("CREATE BUTTON");
+                String[] str = {"You have clicked the create button!"};
+                s.setAttribute("fehlermeldungen", str);
                 break;
             }
             case "remove": {
                 System.out.println("REMOVE BUTTON");
+                String[] str = {"You have clicked the remove button!"};
+                s.setAttribute("fehlermeldungen", str);
                 break;
             }
             default: {

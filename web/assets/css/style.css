@@ -18,6 +18,15 @@ body {
     margin-bottom: 5px;
 }
 
+.panel {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.alert {
+    margin: 10px;
+}
+
 .checkbox {
     display: inline-block;
 }
