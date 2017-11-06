@@ -151,21 +151,28 @@ public class IndexServlet extends HttpServlet {
             isValid = false;
         }
         if (nummer.isEmpty()) {
-            setFehlermeldung(request, "Bitte geben Sie eine Nummer ein.");
+            errors.add("Bitte geben Sie eine Nummer ein.");
+            isValid = false;
         }
         if (jahr.isEmpty()) {
-            setFehlermeldung(request, "Bitte geben Sie ein Jahr ein.");
+            errors.add("Bitte geben Sie ein Jahr ein.");
+            isValid = false;
         }
         if (titel.isEmpty()) {
-            setFehlermeldung(request, "Bitte geben Sie einen Titel ein.");
+            errors.add("Bitte geben Sie eine Serie ein.");
+            isValid = false;
         }
         if (zeichner.isEmpty()) {
-            setFehlermeldung(request, "Bitte geben Sie einen Zeichner ein.");
+            errors.add("Bitte geben Sie einen Zeichner ein.");
+            isValid = false;
         }
         if (texter.isEmpty()) {
-            setFehlermeldung(request, "Bitte geben Sie einen Texter ein.");
+            errors.add("Bitte geben Sie einen Texter ein.");
+            isValid = false;
         } 
         
+       
+            
         if(isValid) {
             int dataJahr = Integer.parseInt(jahr);
             int dataNummer = Integer.parseInt(nummer);
@@ -184,13 +191,6 @@ public class IndexServlet extends HttpServlet {
             setFehlermeldung(request, errs);
         }
 
-        /*toClient.println("<html>");
-        toClient.println("<body>");
-        toClient.println("Test " + titel + ".");
-        toClient.println("</body>");
-        toClient.println("</html>");
-        
-        toClient.flush();*/
     }
 
     private void setFehlermeldung(HttpServletRequest request, String... msg) {
